@@ -13,7 +13,23 @@
     <input type="text" name="" placeholder="write student name here..." id="studentName">
     <button onclick="enter()">enter</button>
     <p id="studentsInClass"></p>
+    <h1>Parking</h1>
+    <input type="text" name="carType" id="carType" placeholder="put your car here...">
+    <input type="text" name="carType" id="carType" placeholder="put your car here...">
+    <input type="text" name="carType" id="carType" placeholder="put your car here...">
+    <input type="text" name="carType" id="carType" placeholder="put your car here...">
+    <input type="text" name="carType" id="carType" placeholder="put your car here...">
+    <button onclick="parkCar()">park car</button>
+    <br /><br />
+    <table border="1">
+        <thead>
+            <th>car Index</th>
+            <th>car Type</th>
+        </thead>
+        <tbody id="parking">
 
+        </tbody>
+    </table>
     <script src="./socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
         crossorigin="anonymous"></script>
 
@@ -23,9 +39,26 @@
             const socket = io("http://localhost:5000");
             socket.emit("studentIn", studentName);
             socket.on("studentInClass", (student) => {
-                document.getElementById('studentsInClass').innerHTML += '<br/>'+ student;
+                document.getElementById('studentsInClass').innerHTML += '<br/>' + student;
             });
             console.log("hello world!");
+        }
+        var carNumbers = -5;
+        const parkCar = () => {
+            const socket = io("http://localhost:5000");
+            let cars = document.getElementsByName("carType");
+            for(let i=0; i<5; i++){
+                let car = {
+                    index:i, 
+                    carType: cars[i].value
+                }
+                socket.emit("parking", car);
+                console.log(`car n ${i}: ${cars[i].value}`);
+            }
+            socket.on("carParked", (car) => {
+                document.getElementById("parking").innerHTML += `<tr><td>${car.index + carNumbers}</td><td>${car.carType}</td><tr>`;
+            })
+            carNumbers+=5;
         }
     </script>
 </body>
