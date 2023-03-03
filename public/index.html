@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>hello Socket</h1>
+    <input type="text" name="" placeholder="write student name here..." id="studentName">
+    <button onclick="enter()">enter</button>
+    <p id="studentsInClass"></p>
+
+    <script src="./socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
+        crossorigin="anonymous"></script>
+
+    <script>
+        const enter = () => {
+            const studentName = document.querySelector("#studentName").value;
+            const socket = io("http://localhost:5000");
+            socket.emit("studentIn", studentName);
+            socket.on("studentInClass", (student) => {
+                document.getElementById('studentsInClass').innerHTML += '<br/>'+ student;
+            });
+            console.log("hello world!");
+        }
+    </script>
+</body>
+
+</html>
